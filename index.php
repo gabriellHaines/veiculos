@@ -20,28 +20,42 @@
         </form>
     </div>
     <?php
+        
         if (isset($_POST["cadastrar"])) {
             header('location:./cadastrar.php');
         }
+        
         if (isset($_POST["Enviar"])) {
+            
             $usuario = $_POST["usuario"];
+            
             require_once('./conexao.php');
+            
             $usu =  "SELECT usu_usuario, usu_id, usu_senha
             FROM usuario
             WHERE ( usu_usuario = '$usuario'  )
             ";
             $resultado = mysqli_query($con , $usu);
+            
             if (mysqli_num_rows($resultado) == 0){
                 echo "Usuário inexistente";
             }else{
+                
                 $row = mysqli_fetch_assoc($resultado);
+                
                 $usu_senha = $row["usu_senha"];
+                
                 $senha = $_POST["senha"];
+                
                 if ($senha == $usu_senha) {
+                    
                     $usu_id = $row["usu_id"];
+                    
                     session_start();
                     $_SESSION['usu_id'] = $usu_id;
+                    
                     header('location:./logado/index.php');
+                
                 } else {
                     echo "Senha incorreta";
                 }

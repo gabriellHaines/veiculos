@@ -38,17 +38,22 @@
             $senha = $_POST["senha"];
             
             if($senhaR == $senha){
+                
                 require_once('./conexao.php');
+                
                 $verificaUsuario =  "SELECT usu_usuario
                 FROM usuario
                 WHERE ( usu_usuario = '$usuario'  )
                 ";
                 $resultado = mysqli_query($con , $verificaUsuario);
+                
                 if(mysqli_num_rows($resultado) == 0){    
+                    
                     $nome = $_POST["nome"];
                     $celular = $_POST["celular"];
                     $cpf = $_POST["cpf"];
                     $idade= $_POST["idade"];
+                    
                     $insertTabela = "INSERT INTO usuario 
                     (usu_usuario,
                     usu_senha,
@@ -65,6 +70,7 @@
                     '$idade')
                     ";
                     mysqli_query($con,$insertTabela);  
+                    
                     if (mysqli_error($con)) {
                         echo "Erro ao executar a query: ". mysqli_error($con);
                     }else{
