@@ -22,8 +22,8 @@
         <input type="text" name = "cpf"  ><br>
         <label for="idade">Digite sua Idade: </label><br>
         <input type="text" name = "idade"  ><br>
-        <button  type="submit" name = "enviar">Enviar</button><br>
-        <button type = "submit" name = "login">Ir Para Login</button><br>
+        <button  type="submit" name = "enviar">Cadastrar Usuário</button>
+        <button type = "submit" name = "login">Ir Para Login</button>
     </form>
     <?php 
         
@@ -41,7 +41,7 @@
                 
                 require_once('./conexao.php');
                 
-                $verificaUsuario =  "SELECT usu_usuario
+                $verificaUsuario =  "SELECT usu_usuario 
                 FROM usuario
                 WHERE ( usu_usuario = '$usuario'  )
                 ";
@@ -49,6 +49,7 @@
                 
                 if(mysqli_num_rows($resultado) == 0){    
                     
+                    //
                     $nome = $_POST["nome"];
                     $celular = $_POST["celular"];
                     $cpf = $_POST["cpf"];
@@ -74,16 +75,33 @@
                     if (mysqli_error($con)) {
                         echo "Erro ao executar a query: ". mysqli_error($con);
                     }else{
+                        
+                        $buscaID =  "SELECT usu_id
+                        FROM usuario
+                        WHERE (usu_usuario = '$usuario')
+                        ";
+                        $resultado = mysqli_query($con,$buscaID);
+                        
+                        //
+                        $row = mysqli_fetch_assoc($resultado);
+                        $usu_id = $row["usu_id"];
+
                         session_start();
-                        $_SESSION['usu_id'] = $usuario;
+                        $_SESSION['usu_id'] = $usu_id;
+                        $_SESSION['usu_usuario'] = $usuario;
+                        //
+                        $_SESSION['usu_nome'] = $nome;
                         header('location:./logado/index.php');
-                    }   
+                    }
+
                 }else {
                     echo "O usuário $usuario já esta cadastrado tente outro nome  de usuário";
                 }
+
             }else{
                 echo "Senhas Diferentes, insira senha iguais" ;
-            } 
+            }
+
             mysqli_close($con);
         }
     ?>
